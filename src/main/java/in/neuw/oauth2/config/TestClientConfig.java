@@ -31,6 +31,9 @@ public class TestClientConfig {
 
     private Logger testWebClientLogger = LoggerFactory.getLogger("TEST_WEB_CLIENT");
 
+    /**
+     * The authorizedClientManager for required by the webClient
+     */
     @Bean
     public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(final ReactiveClientRegistrationRepository clientRegistrationRepository,
                                                                          final ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
@@ -44,14 +47,19 @@ public class TestClientConfig {
         return authorizedClientManager;
     }
 
+    /**
+     * The Oauth2 based WebClient bean for the web service
+     */
     @Bean("testWebClient")
     public WebClient webClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
 
         String registrationId = "local";
 
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+        // for telling which registration to use for the webclient
         oauth.setDefaultClientRegistrationId(registrationId);
         return WebClient.builder()
+                // base path of the client, this way we need to set the complete url again
                 .baseUrl(testClientBaseUrl)
                 .filter(oauth)
                 .filter(logRequest())
@@ -59,6 +67,9 @@ public class TestClientConfig {
                 .build();
     }
 
+    /*
+     * Log request details for the downstream web service calls
+     */
     private ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(c -> {
             testWebClientLogger.info("Request: {} {}", c.method(), c.url());
@@ -76,6 +87,9 @@ public class TestClientConfig {
         });
     }
 
+    /*
+     * Log response details for the downstream web service calls
+     */
     private ExchangeFilterFunction logResponse() {
         return ExchangeFilterFunction.ofResponseProcessor(c -> {
             testWebClientLogger.info("Response: {} {}", c.statusCode());

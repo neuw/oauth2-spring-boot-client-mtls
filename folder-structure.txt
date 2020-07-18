@@ -1,0 +1,28 @@
+\--oauth2-spring-boot-client - Root
+|   .gitignore - Git management for ignoring not required files
+|   pom.xml - Maven pom.xml
++---src
+|   +---main
+|   |   +---java
+|   |   |   \---in
+|   |   |       \---neuw
+|   |   |           \---oauth2
+|   |   |               |   Oauth2SpringBootClientApplication.java - The SpringBootApplication main class.
+|   |   |               |
+|   |   |               +---client
+|   |   |               |       TestClientService.java - The Service class for the interaction with the WebClient for the test resource server.
+|   |   |               |
+|   |   |               +---config
+|   |   |               |       TestClientConfig.java - The TestClientConfig class is for the Beans setup of the WebClient and other beans.
+|   |   |               |
+|   |   |               +---service
+|   |   |               |       TestService.java - The Service class for business logics intermediate between the Controller and the web client.
+|   |   |               |
+|   |   |               \---web
+|   |   |                   \---controller
+|   |   |                           TestController.java - The Web facing controller class for various request mappings
+|   |   |
+|   |   \---resources
+|   |           application.properties - The Spring's application.properties for management of various variables
+|   |
+|
