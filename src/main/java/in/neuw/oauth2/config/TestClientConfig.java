@@ -92,7 +92,7 @@ public class TestClientConfig {
      */
     private ExchangeFilterFunction logResponse() {
         return ExchangeFilterFunction.ofResponseProcessor(c -> {
-            testWebClientLogger.info("Response: {} {}", c.statusCode());
+            testWebClientLogger.info("Response: {}", c.statusCode());
             // if want to show the response headers in the log by any chance?
             /*c.headers().asHttpHeaders().forEach((n, v) -> {
                 testWebClientLogger.info("response header {}={}", n, v);
