@@ -119,10 +119,10 @@ public class OAuth2ClientSSLPropertiesConfigurer {
 
     private SslContext sslContext(final String registrationKey, final SslConfiguration sslConfiguration) throws AppBootTimeException {
 
-        KeyManagerFactory keyManagerFactory = SSLContextHelper.getKeyStore(registrationKey, sslConfiguration.keystore, sslConfiguration.keystorePassword);
+        KeyManagerFactory keyManagerFactory = SSLContextHelper.getKeyStore(sslConfiguration.keystore, sslConfiguration.keystorePassword);
         keyManagerFactories.put(registrationKey, keyManagerFactory);
 
-        TrustManagerFactory trustManagerFactory = SSLContextHelper.getTrustStore(registrationKey, sslConfiguration.truststore, sslConfiguration.truststorePassword);
+        TrustManagerFactory trustManagerFactory = SSLContextHelper.getTrustStore(sslConfiguration.truststore, sslConfiguration.truststorePassword);
         trustManagerFactories.put(registrationKey, trustManagerFactory);
 
         SslContext sslContext = SSLContextHelper.sslContext(keyManagerFactory, trustManagerFactory);
