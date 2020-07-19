@@ -1,6 +1,8 @@
 package in.neuw.oauth2.config;
 
+import in.neuw.oauth2.util.security.SSLContextHelper;
 import io.netty.channel.ChannelOption;
+import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -107,9 +112,24 @@ public class TestClientConfig {
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManagerForTestClient);
         // for telling which registration to use for the webclient
         oauth.setDefaultClientRegistrationId(registrationId);
+
+        /*KeyManagerFactory keyManagerFactory = SSLContextHelper.getKeyStore(encodedKeystoreString, keystorePassword);
+
+        TrustManagerFactory trustManagerFactory = SSLContextHelper.getTrustStore(encodedTruststoreString, truststorePassword);
+
+        SslContext sslContext = SSLContextHelper.sslContext(keyManagerFactory, trustManagerFactory);
+
+        HttpClient resourceServerHttpClient = HttpClient.create()
+                .tcpConfiguration(client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000))
+                .secure(sslContextSpec -> {
+                    sslContextSpec.sslContext(oAuth2ClientSSLPropertiesConfigurer.getConstructedSslContexts().get(registrationId));
+                });
+        ClientHttpConnector customHttpConnector = new ReactorClientHttpConnector(resourceServerHttpClient);*/
+
         return WebClient.builder()
                 // base path of the client, this way we need to set the complete url again
                 .baseUrl(testClientBaseUrl)
+                //.clientConnector(customHttpConnector)
                 .filter(oauth)
                 .filter(logRequest())
                 .filter(logResponse())
