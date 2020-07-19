@@ -25,7 +25,7 @@ public class TestClientService {
         if (StringUtils.isEmpty(name)) {
             name = "User";
         }
-        String message = welcome +" "+ name;
+        String message = welcome + " " + name;
 
         return testWebClient
                 .get()
