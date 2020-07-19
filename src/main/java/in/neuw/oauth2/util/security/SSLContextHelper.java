@@ -28,9 +28,9 @@ public class SSLContextHelper {
         try {
             SslContext sslContext = SslContextBuilder.forClient()
                     .clientAuth(ClientAuth.REQUIRE)
-                    // the following line is not recommended and not used either
-                    //.trustManager(InsecureTrustManagerFactory.INSTANCE)
                     .keyManager(keyManagerFactory)
+                    // the following line is not recommended and commented out
+                    // .trustManager(InsecureTrustManagerFactory.INSTANCE)
                     .trustManager(trustManagerFactory)
                     .build();
             return sslContext;
